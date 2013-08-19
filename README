@@ -1,0 +1,13 @@
+localization
+	thx.culture
+	integration with view (simple command and auto reload when domain is changed)
+extensible view
+	compose on top of ractive
+	autoload HTML from file
+	autoload HTML from snippet
+module system
+event system that preserve status using None/Some?
+build for release/debug
+build for stylesheet release/debug
+
+commit changes

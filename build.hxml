@@ -1,0 +1,9 @@
+-js bin/js/app.js
+-main App
+-cp src
+-lib minject
+-lib thx-react
+-lib thx-core
+-lib thx-culture
+-lib ractive
+-debug
