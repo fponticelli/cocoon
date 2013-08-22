@@ -10,7 +10,7 @@ class JavaScriptErrorInterceptModule extends Module
 	{
 		js.Browser.window.onerror = cast function(msg : String, url : String, line : String) {
 			var message = '$msg <small>(line $line) at $url</small>';
-			communicator.queue.queue(new LogMessage(message, Error));
+			communicator.queue.enqueue(new LogMessage(message, Error));
 		};
 	}
 }

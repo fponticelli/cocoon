@@ -6,7 +6,7 @@ class GitVersion
 {
 	public static macro function get()
 	{
-		var process     = new sys.io.Process('git', ['describe', '--always', '--dirty', '--long', '--tags']),
+		var process     = new sys.io.Process('git', ['describe', '--always', '--long', '--tags']),
 			description = process.stdout.readAll().toString().trim();
 		return macro $v{description};
 	}

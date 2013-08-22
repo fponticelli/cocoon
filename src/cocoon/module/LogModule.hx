@@ -8,5 +8,5 @@ class LogModule extends Module
 {
 	@inject public var logger : ILogger;
     override public function connect()
-        communicator.queue.consume(logger.log);
+        communicator.queue.process(logger.log);
 }
