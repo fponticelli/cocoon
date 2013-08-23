@@ -10,11 +10,13 @@ class Locale
 	@:isVar public var culture(default, set) : Culture;
 	@:isVar public var translation(default, null) : ITranslation;
 
-	public var onchange(default, null) : Signal0;
+	public var signals(default, null) : {
+		public var change(default, null) : Signal0;
+	};
 
 	public function new(culture : Culture, translation : ITranslation)
 	{
-		onchange = new Signal0();
+		signals = { change : new Signal0() };
 		this.translation = translation;
 		this.culture = culture;
 	}
@@ -30,7 +32,7 @@ class Locale
 	{
 		this.culture       = culture;
 		translation.domain = culture;
-		onchange.trigger();
+		signals.change.trigger();
 		return culture;
 	}
 }

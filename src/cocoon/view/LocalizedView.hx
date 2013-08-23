@@ -5,6 +5,7 @@ import js.html.Element;
 import ractive.Ractive;
 import ractive.View;
 
+@:skipTemplate
 class LocalizedView<T> extends View<T>
 {
 	var locale : Locale;
@@ -13,10 +14,10 @@ class LocalizedView<T> extends View<T>
 		this.locale = locale;
 		super({
 			el : el,
-			data : data,
+			data : cast { data : data },
 			template : '{{#data}}${getTemplate()}{{/data}}'
 		});
-		locale.onchange.on(updateLocalization);
+		locale.signals.change.add(updateLocalization);
 		updateLocalization();
 	}
 
@@ -41,35 +42,34 @@ class LocalizedView<T> extends View<T>
 	}
 
 	static function k(keypath : String)
-		return 'data.$keypath';
+		return null == keypath ? 'data' : 'data.$keypath';
 
-	override public inline function get<T>(keypath : String) : T
+	override public function get<T>(keypath : String) : T
 		return super.get(k(keypath));
 
-	override public inline function set<T>(keypath : String, value : T, ?complete : Void -> Void)
+	override public function set<T>(keypath : String, value : T, ?complete : Void -> Void)
 	{
-		trace(k(keypath));
-		trace(keypath);
-		trace(value);
 		super.set(k(keypath), value, complete);
 	}
 
-	override public inline function setMany(values : Dynamic, ?complete : Void -> Void)
+	override public function setMany(values : Dynamic, ?complete : Void -> Void)
 		super.setMany({ data : values }, complete);
 
-	override public inline function animate(keypath : String, value : Dynamic, ?options : RactiveAnimateOptions)
+	override public function animate(keypath : String, value : Dynamic, ?options : RactiveAnimateOptions)
 		super.animate(k(keypath), value, options);
 
-	override public inline function animateMany(values : Dynamic, ?options : RactiveAnimateOptions)
+	override public function animateMany(values : Dynamic, ?options : RactiveAnimateOptions)
 		super.animateMany({ data : values }, options);
 
-	override public inline function update(?keypath : String, ?complete : Void -> Void)
+	override public function update(?keypath : String, ?complete : Void -> Void)
+	{
 		super.update(k(keypath), complete);
+	}
 
-	override public inline function observe(keypath : String, complete : Dynamic -> Dynamic -> Void, ?options : { ?init : Bool, ?context : Dynamic }) : RactiveCancelObject
+	override public function observe(keypath : String, complete : Dynamic -> Dynamic -> Void, ?options : { ?init : Bool, ?context : Dynamic }) : RactiveCancelObject
 		return super.observe(k(keypath), complete, options);
 
-	override public inline function observeMany(map : Dynamic<Dynamic -> Dynamic -> Void>, ?options : { ?init : Bool, ?context : Dynamic }) : RactiveCancelObject
+	override public function observeMany(map : Dynamic<Dynamic -> Dynamic -> Void>, ?options : { ?init : Bool, ?context : Dynamic }) : RactiveCancelObject
 		return super.observeMany(cast { data : map }, options);
 }
 
