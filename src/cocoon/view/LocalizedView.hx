@@ -23,6 +23,7 @@ class LocalizedView<T> extends View<T>
 
 	public function updateLocalization()
 	{
+		super.set("culture", locale.culture);
 		super.set("_", function(v) return locale.singular(v));
 		super.set("__", function(s, p, q) return locale.plural(s, p, q));
 		super.set("_f", function(pattern) {
@@ -52,8 +53,8 @@ class LocalizedView<T> extends View<T>
 		super.set(k(keypath), value, complete);
 	}
 
-	override public function setMany(values : Dynamic, ?complete : Void -> Void)
-		super.setMany({ data : values }, complete);
+	override public function setAll(values : Dynamic, ?complete : Void -> Void)
+		super.setAll({ data : values }, complete);
 
 	override public function animate(keypath : String, value : Dynamic, ?options : RactiveAnimateOptions)
 		super.animate(k(keypath), value, options);

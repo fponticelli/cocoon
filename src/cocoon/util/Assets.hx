@@ -1,10 +1,10 @@
-package precog.util;
+package cocoon.util;
 
 using thx.react.promise.Http;
 using thx.react.Promise;
 import haxe.Json;
 
-class Assets 
+class Assets
 {
 	public static function json(path : String) : Promise<Dynamic -> Void>
 	{
