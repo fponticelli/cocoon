@@ -30,6 +30,9 @@ class LocalizedView<T> extends View<T>
 			var args : Array<Dynamic> = untyped __js__("Array.prototype.slice.call(arguments, 1)");
 			return locale.format(pattern, args);
 		});
+		super.set("_yn", function(value) {
+			return locale.singular(value ? "yes" : "no");
+		});
 	}
 
 	override function get_data() : T
@@ -43,15 +46,24 @@ class LocalizedView<T> extends View<T>
 	}
 
 	static function k(keypath : String)
-		return null == keypath ? 'data' : 'data.$keypath';
+	{
+		return switch(keypath) {
+			case k if(k == null):
+				'data';
+			case k if(k.substr(0, 1) == "~" && k.length == 1):
+				null;
+			case k if(k.substr(0, 1) == "~"):
+				k.substr(1);
+			case _:
+				'data.$keypath';
+		};
+	}
 
 	override public function get<T>(keypath : String) : T
 		return super.get(k(keypath));
 
 	override public function set<T>(keypath : String, value : T, ?complete : Void -> Void)
-	{
 		super.set(k(keypath), value, complete);
-	}
 
 	override public function setAll(values : Dynamic, ?complete : Void -> Void)
 		super.setAll({ data : values }, complete);
@@ -63,9 +75,7 @@ class LocalizedView<T> extends View<T>
 		super.animateMany({ data : values }, options);
 
 	override public function update(?keypath : String, ?complete : Void -> Void)
-	{
 		super.update(k(keypath), complete);
-	}
 
 	override public function observe(keypath : String, complete : Dynamic -> Dynamic -> Void, ?options : { ?init : Bool, ?context : Dynamic }) : RactiveCancelObject
 		return super.observe(k(keypath), complete, options);

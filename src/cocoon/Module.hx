@@ -4,10 +4,8 @@ import minject.AsyncInjector;
 
 class Module
 {
-	@inject
-	public var communicator : Communicator;
-	@inject
-	public var injector : AsyncInjector;
+	@inject public var communicator : Communicator;
+	@inject public var injector : AsyncInjector;
 
 	public function new() {}
 
