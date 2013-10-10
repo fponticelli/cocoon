@@ -1,5 +1,7 @@
 package cocoon.util;
 
+import haxe.Json;
+
 import jQuery.*;
 
 using thx.react.Promise;
@@ -49,6 +51,15 @@ class Request
 			options = {};
 		options.type = "DELETE";
 		return request(url, options);
+	}
+
+	public static function setJsonPayload(payload : Dynamic, ?options : RequestOptions)
+	{
+		if(null == options)
+			options = {};
+		options.data = Json.stringify(payload);
+		options.contentType = "application/json";
+		return options;
 	}
 }
 
